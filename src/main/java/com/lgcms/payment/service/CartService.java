@@ -44,4 +44,9 @@ public class CartService {
 
         return new CartListResponse(cartList);
     }
+
+    @Transactional
+    public void deleteCart(Long cartId) {
+        cartRepository.deleteById(cartId);
+    }
 }

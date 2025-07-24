@@ -35,4 +35,11 @@ public class CartController {
 
         return ResponseEntity.ok(BaseResponse.ok(cartListResponse));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse> deleteCart(@PathVariable("id") Long cartId){
+
+        cartService.deleteCart(cartId);
+        return ResponseEntity.ok(BaseResponse.ok(null));
+    }
 }
