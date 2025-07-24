@@ -2,6 +2,7 @@ package com.lgcms.payment.controller;
 
 import com.lgcms.payment.common.dto.BaseResponse;
 import com.lgcms.payment.dto.request.CartAddRequest;
+import com.lgcms.payment.dto.response.CartListResponse;
 import com.lgcms.payment.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,5 +22,17 @@ public class CartController {
                                                 @RequestHeader("X-USER-ID") String id){
         Long memberId = Long.parseLong("1");
         cartService.addCart(memberId, cartAddRequest);
+
+        return ResponseEntity.ok(BaseResponse.ok(null));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<BaseResponse> getCartList(@RequestHeader("X-USER-ID") String id){
+
+        Long memberId = Long.parseLong("1");
+
+        CartListResponse cartListResponse = cartService.getCartList(memberId);
+
+        return ResponseEntity.ok(BaseResponse.ok(cartListResponse));
     }
 }

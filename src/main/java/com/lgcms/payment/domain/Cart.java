@@ -26,4 +26,6 @@ public class Cart {
     private String title;
 
     private Long price;
+
+    private String thumbnailUrl;
 }
