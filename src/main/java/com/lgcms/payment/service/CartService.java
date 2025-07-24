@@ -49,4 +49,12 @@ public class CartService {
     public void deleteCart(Long cartId) {
         cartRepository.deleteById(cartId);
     }
+
+    @Transactional
+    public Long getMemberCartCount(Long memberId) {
+
+        Long count = cartRepository.countByMemberId(memberId);
+
+        return count;
+    }
 }

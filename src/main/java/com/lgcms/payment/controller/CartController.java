@@ -1,5 +1,6 @@
 package com.lgcms.payment.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.lgcms.payment.common.dto.BaseResponse;
 import com.lgcms.payment.dto.request.CartAddRequest;
 import com.lgcms.payment.dto.response.CartListResponse;
@@ -34,6 +35,15 @@ public class CartController {
         CartListResponse cartListResponse = cartService.getCartList(memberId);
 
         return ResponseEntity.ok(BaseResponse.ok(cartListResponse));
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<BaseResponse> getMemberCartCount(@RequestHeader("X-USER-ID")String id){
+        Long memberId = Long.parseLong("1");
+
+        Long count = cartService.getMemberCartCount(memberId);
+
+        return ResponseEntity.ok(BaseResponse.ok(count));
     }
 
     @DeleteMapping("/{id}")
