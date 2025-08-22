@@ -5,8 +5,8 @@ import com.lgcms.payment.common.dto.BaseResponse;
 import com.lgcms.payment.dto.request.PaymentApproveRequest;
 import com.lgcms.payment.dto.request.PaymentReadyRequest;
 import com.lgcms.payment.dto.response.PaymentReadyResponse;
+import com.lgcms.payment.service.CartService;
 import com.lgcms.payment.service.PaymentService;
-import com.lgcms.payment.service.internal.LectureService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,25 +21,27 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final CartService cartService;
 
     @PostMapping("/ready")
     public ResponseEntity<BaseResponse> readyKakaoPayment(@RequestBody PaymentReadyRequest paymentReadyRequest,
-                                                          @RequestHeader("X-USER-ID") String memberId){
-        PaymentReadyResponse paymentResponse = paymentService.getReady(paymentReadyRequest, Long.parseLong(memberId));
+                                                          @RequestHeader("X-USER-ID") Long memberId){
+        PaymentReadyResponse paymentResponse = paymentService.getReady(paymentReadyRequest, memberId);
         return ResponseEntity.ok(BaseResponse.ok(paymentResponse));
     }
 
     @PostMapping("/list/ready")
     public ResponseEntity<BaseResponse> listReadyKakaoPayment(@RequestBody List<PaymentReadyRequest> paymentReadyRequests,
-                                                          @RequestHeader("X-USER-ID") String memberId){
-        PaymentReadyResponse paymentResponse = paymentService.getListReady(paymentReadyRequests, Long.parseLong(memberId));
+                                                          @RequestHeader("X-USER-ID") Long memberId){
+        PaymentReadyResponse paymentResponse = paymentService.getListReady(paymentReadyRequests, memberId);
         return ResponseEntity.ok(BaseResponse.ok(paymentResponse));
     }
 
     @PostMapping("/approve")
     public ResponseEntity<BaseResponse> approveKakaoPayment(@RequestBody PaymentApproveRequest paymentApproveRequest,
-                                                            @RequestHeader("X-USER-Id") String memberId){
-        paymentService.getApprove(paymentApproveRequest, Long.parseLong(memberId));
+                                                            @RequestHeader("X-USER-Id") Long memberId){
+        paymentService.getApprove(paymentApproveRequest, memberId);
+        cartService.deleteCartItems(paymentApproveRequest.cartId());
         return ResponseEntity.ok(BaseResponse.ok(null));
     }
 }

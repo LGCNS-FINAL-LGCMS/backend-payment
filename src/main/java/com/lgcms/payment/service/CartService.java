@@ -34,7 +34,7 @@ public class CartService {
     @Transactional
     public CartListResponse getCartList(Long memberId) {
         List<Cart> carts = cartRepository.findAllByMemberId(memberId);
-
+        System.out.println(memberId);
        List<CartResponse> cartList = carts.stream()
                 .map(cart -> new CartResponse(cart.getLectureId(),
                         cart.getTitle(),
@@ -56,5 +56,12 @@ public class CartService {
         Long count = cartRepository.countByMemberId(memberId);
 
         return count;
+    }
+
+    @Transactional
+    public void deleteCartItems(List<Long> ids) {
+        for(Long id : ids){
+            cartRepository.deleteById(id);
+        }
     }
 }
