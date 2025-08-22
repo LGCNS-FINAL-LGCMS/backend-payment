@@ -14,6 +14,7 @@ import com.lgcms.payment.dto.kakao.response.KakaoReadyResponse;
 import com.lgcms.payment.dto.request.PaymentApproveRequest;
 import com.lgcms.payment.dto.request.PaymentReadyRequest;
 import com.lgcms.payment.dto.response.PaymentReadyResponse;
+import com.lgcms.payment.repository.CartRepository;
 import com.lgcms.payment.repository.PaymentStatusRepository;
 import com.lgcms.payment.service.internal.LectureService;
 import lombok.RequiredArgsConstructor;
@@ -34,12 +35,13 @@ public class PaymentService {
     private final WebClient webClient;
     private final LectureService lectureService;
     private final PaymentStatusRepository paymentStatusRepository;
+    private final CartRepository cartRepository;
 
     @Transactional
     public PaymentReadyResponse getReady(PaymentReadyRequest paymentReadyRequest, Long memberId) {
-        if (lectureService.isExist(memberId, paymentReadyRequest.LectureId())) {
-            throw new BaseException(PaymentError.ALREADY_PAYMENT_LECTURE);
-        }
+//        if (lectureService.isExist(memberId, paymentReadyRequest.LectureId())) {
+//            throw new BaseException(PaymentError.ALREADY_PAYMENT_LECTURE);
+//        }
 
         KakaoReadyRequest kakaoReadyRequest = KakaoReadyRequest.builder()
                 .cid(kakaoConfig.getCid())
@@ -72,49 +74,52 @@ public class PaymentService {
 
     @Transactional
     public void getApprove(PaymentApproveRequest paymentApproveRequest, Long memberId) {
-
-        KakaoApproveRequest kakaoApproveRequest = KakaoApproveRequest.builder()
-                .tid(paymentApproveRequest.tid())
-                .pgToken(paymentApproveRequest.token())
-                .partnerOrderId(kakaoConfig.getPartnerOrderId())
-                .partnerUserId(kakaoConfig.getPartnerUserId())
-                .cid(kakaoConfig.getCid())
-                .build();
-
-        KakaoApproveResponse kakaoApproveResponse = webClient.post()
-                .uri("/approve")
-                .bodyValue(kakaoApproveRequest)
-                .retrieve()
-                .bodyToMono(KakaoApproveResponse.class)
-                .block();
-
-
         try {
-            List<PaymentStatus> paymentStatusList = paymentStatusRepository.findAllByMemberId(memberId);
-            for (PaymentStatus paymentStatus : paymentStatusList) {
-                lectureService.joinStudent(new JoinLectureRequest(paymentStatus.getLectureId(), memberId));
-            }
-        } catch (Exception e) {
-            //결제 취소
-
-            KakaoCancelRequest kakaoCancelRequest = KakaoCancelRequest.builder()
-                    .cancel_tax_free_amount(kakaoApproveResponse.getAmount().getTax_free())
-                    .cancel_amount(kakaoApproveResponse.getAmount().getTotal())
+            KakaoApproveRequest kakaoApproveRequest = KakaoApproveRequest.builder()
+                    .tid(paymentApproveRequest.tid())
+                    .pgToken(paymentApproveRequest.token())
+                    .partnerOrderId(kakaoConfig.getPartnerOrderId())
+                    .partnerUserId(kakaoConfig.getPartnerUserId())
                     .cid(kakaoConfig.getCid())
-                    .tid(kakaoApproveResponse.getTid())
                     .build();
 
-            KakaoCancelResponse kakaoCancelResponse = webClient.post()
-                    .uri("/cancel")
-                    .bodyValue(kakaoCancelRequest)
+            KakaoApproveResponse kakaoApproveResponse = webClient.post()
+                    .uri("/approve")
+                    .bodyValue(kakaoApproveRequest)
                     .retrieve()
-                    .bodyToMono(KakaoCancelResponse.class)
+                    .bodyToMono(KakaoApproveResponse.class)
                     .block();
 
-            paymentStatusRepository.deleteAllByMemberId(memberId);
-
+        }catch (Exception e){
             throw new BaseException(PaymentError.PAYMENT_FAIL);
         }
+
+//        try {
+//            List<PaymentStatus> paymentStatusList = paymentStatusRepository.findAllByMemberId(memberId);
+//            for (PaymentStatus paymentStatus : paymentStatusList) {
+//                lectureService.joinStudent(new JoinLectureRequest(paymentStatus.getLectureId(), memberId));
+//            }
+//        } catch (Exception e) {
+//            //결제 취소
+//
+//            KakaoCancelRequest kakaoCancelRequest = KakaoCancelRequest.builder()
+//                    .cancel_tax_free_amount(kakaoApproveResponse.getAmount().getTax_free())
+//                    .cancel_amount(kakaoApproveResponse.getAmount().getTotal())
+//                    .cid(kakaoConfig.getCid())
+//                    .tid(kakaoApproveResponse.getTid())
+//                    .build();
+//
+//            KakaoCancelResponse kakaoCancelResponse = webClient.post()
+//                    .uri("/cancel")
+//                    .bodyValue(kakaoCancelRequest)
+//                    .retrieve()
+//                    .bodyToMono(KakaoCancelResponse.class)
+//                    .block();
+//
+//            paymentStatusRepository.deleteAllByMemberId(memberId);
+//
+//            throw new BaseException(PaymentError.PAYMENT_FAIL);
+//        }
     }
 
     public PaymentReadyResponse getListReady(List<PaymentReadyRequest> paymentReadyRequests, Long memberId) {

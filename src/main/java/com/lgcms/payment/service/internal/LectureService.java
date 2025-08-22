@@ -4,7 +4,7 @@ import com.lgcms.payment.dto.internal.request.JoinLectureRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "lecture-service", url="http://localhost:8082/internal/lecture")
+@FeignClient(name = "RemoteLectureService" , url="/internal/lecture")
 public interface LectureService {
 
     @PostMapping("/join")
