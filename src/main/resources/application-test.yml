@@ -42,3 +42,17 @@ spring:
         config:
           RemoteLectureService:
             url: http://localhost:38106
+
+kakao:
+  baseUrl: https://open-api.kakaopay.com/online/v1/payment
+  connectTimeout: 5000
+  readTimeout: 5000
+  cid: "TC0ONETIME"
+  approvalUrl: "http://localhost:5173/success"
+  failUrl: "http://localhost:5173/fail"
+  cancelUrl: "http://localhost:5173/cancel"
+  taxFreeAmount: 0
+  vatAmount: 0
+  secret: KAKAO_SECRET
+  partnerOrderId: "hello"
+  partnerUserId: "hello"
