@@ -36,7 +36,8 @@ public class CartService {
         List<Cart> carts = cartRepository.findAllByMemberId(memberId);
         System.out.println(memberId);
        List<CartResponse> cartList = carts.stream()
-                .map(cart -> new CartResponse(cart.getLectureId(),
+                .map(cart -> new CartResponse(cart.getId(),
+                        cart.getLectureId(),
                         cart.getTitle(),
                         cart.getPrice(),
                         cart.getThumbnailUrl()))
