@@ -1,6 +1,7 @@
 package com.lgcms.payment.common.kafka.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lgcms.payment.common.kafka.dto.KafkaEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

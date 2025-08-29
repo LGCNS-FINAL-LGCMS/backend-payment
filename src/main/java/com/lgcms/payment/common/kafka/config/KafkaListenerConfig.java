@@ -1,7 +1,7 @@
 package com.lgcms.payment.common.kafka.config;
 
 
-import com.lgcms.lecture.common.kafka.dto.KafkaEvent;
+import com.lgcms.payment.common.kafka.dto.KafkaEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
