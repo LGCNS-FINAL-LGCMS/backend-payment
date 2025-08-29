@@ -39,7 +39,7 @@ public class PaymentController {
 
     @PostMapping("/approve")
     public ResponseEntity<BaseResponse> approveKakaoPayment(@RequestBody PaymentApproveRequest paymentApproveRequest,
-                                                            @RequestHeader("X-USER-Id") Long memberId){
+                                                            @RequestHeader("X-USER-ID") Long memberId){
         paymentService.getApprove(paymentApproveRequest, memberId);
         cartService.deleteCartItems(paymentApproveRequest.cartId());
         return ResponseEntity.ok(BaseResponse.ok(null));

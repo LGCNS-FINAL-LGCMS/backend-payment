@@ -4,12 +4,9 @@ import com.lgcms.payment.common.config.payment.KakaoConfig;
 import com.lgcms.payment.common.dto.exception.BaseException;
 import com.lgcms.payment.common.dto.exception.PaymentError;
 import com.lgcms.payment.domain.PaymentStatus;
-import com.lgcms.payment.dto.internal.request.JoinLectureRequest;
 import com.lgcms.payment.dto.kakao.request.KakaoApproveRequest;
-import com.lgcms.payment.dto.kakao.request.KakaoCancelRequest;
 import com.lgcms.payment.dto.kakao.request.KakaoReadyRequest;
 import com.lgcms.payment.dto.kakao.response.KakaoApproveResponse;
-import com.lgcms.payment.dto.kakao.response.KakaoCancelResponse;
 import com.lgcms.payment.dto.kakao.response.KakaoReadyResponse;
 import com.lgcms.payment.dto.request.PaymentApproveRequest;
 import com.lgcms.payment.dto.request.PaymentReadyRequest;
@@ -65,7 +62,7 @@ public class PaymentService {
 
         PaymentStatus paymentStatus = PaymentStatus.builder()
                 .memberId(memberId)
-                .lectureId(paymentReadyRequest.LectureId())
+                .lectureId(paymentReadyRequest.lectureId())
                 .build();
         paymentStatusRepository.save(paymentStatus);
 
@@ -130,7 +127,7 @@ public class PaymentService {
             totalAmount += paymentReadyRequest.price();
             PaymentStatus paymentStatus = PaymentStatus.builder()
                     .memberId(memberId)
-                    .lectureId(paymentReadyRequest.LectureId())
+                    .lectureId(paymentReadyRequest.lectureId())
                     .build();
             paymentStatusList.add(paymentStatus);
         }
