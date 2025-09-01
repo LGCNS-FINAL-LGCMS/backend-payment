@@ -14,7 +14,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:38121/payment?serverTimezone=UTC&useSSL=true&autoReconnect=true&useUnicode=true&characterEncoding=utf-8
-    username: admin
+    username: lgcms
     password: 1234
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -28,7 +28,7 @@ spring:
     open-in-view: false
 
   kafka:
-    bootstrap-servers: localhost:381233
+    bootstrap-servers: localhost:38123
     listener:
       ack-mode: manual_immediate
     consumer:
@@ -49,7 +49,7 @@ spring:
   data:
     redis:
       host: localhost
-      port: 6379
+      port: 38122
       database: 14
 
 kakao:
