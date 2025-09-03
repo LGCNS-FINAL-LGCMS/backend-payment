@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/student/payment")
 public class CartController {
 
     private final CartService cartService;
@@ -33,7 +34,7 @@ public class CartController {
         return ResponseEntity.ok(BaseResponse.ok(cartListResponse));
     }
 
-    @GetMapping("/admin/cart/count")
+    @GetMapping("/cart/count")
     public ResponseEntity<BaseResponse> getMemberCartCount(@RequestHeader("X-USER-ID") Long memberId){
 
         Long count = cartService.getMemberCartCount(memberId);
