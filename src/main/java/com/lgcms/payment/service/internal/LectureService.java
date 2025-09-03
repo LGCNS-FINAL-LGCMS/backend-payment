@@ -10,6 +10,6 @@ public interface LectureService {
     @PostMapping("/internal/lecture/student/join")
     public void joinStudent(@RequestBody JoinLectureRequest joinLectureRequest);
 
-    @GetMapping("/internal//lecture/student/verify")
+    @GetMapping("/internal/lecture/student/verify")
     public Boolean isExist(@RequestParam("memberId") Long memberId, @RequestParam("lectureId") String lectureId);
 }
