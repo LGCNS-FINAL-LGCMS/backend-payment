@@ -4,12 +4,12 @@ import com.lgcms.payment.dto.internal.request.JoinLectureRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "RemoteLectureService" , url="/internal/lecture")
+@FeignClient(name = "RemoteLectureService")
 public interface LectureService {
 
-    @PostMapping("/join")
-    void joinStudent(@RequestBody JoinLectureRequest joinLectureRequest);
+    @PostMapping("/internal/lecture/student/join")
+    public void joinStudent(@RequestBody JoinLectureRequest joinLectureRequest);
 
-    @GetMapping("/verify")
+    @GetMapping("/internal/lecture/student/verify")
     public Boolean isExist(@RequestParam("memberId") Long memberId, @RequestParam("lectureId") String lectureId);
 }

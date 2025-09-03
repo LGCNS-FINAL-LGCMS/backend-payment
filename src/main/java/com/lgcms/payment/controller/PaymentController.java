@@ -41,7 +41,6 @@ public class PaymentController {
     public ResponseEntity<BaseResponse> approveKakaoPayment(@RequestBody PaymentApproveRequest paymentApproveRequest,
                                                             @RequestHeader("X-USER-ID") Long memberId){
         paymentService.getApprove(paymentApproveRequest, memberId);
-        cartService.deleteCartItems(paymentApproveRequest.cartId());
         return ResponseEntity.ok(BaseResponse.ok(null));
     }
 }

@@ -4,10 +4,12 @@ import com.lgcms.payment.common.config.payment.KakaoConfig;
 import com.lgcms.payment.common.dto.exception.BaseException;
 import com.lgcms.payment.common.dto.exception.PaymentError;
 import com.lgcms.payment.domain.PaymentStatus;
+import com.lgcms.payment.dto.internal.request.JoinLectureRequest;
 import com.lgcms.payment.dto.kakao.request.KakaoApproveRequest;
 import com.lgcms.payment.dto.kakao.request.KakaoReadyRequest;
 import com.lgcms.payment.dto.kakao.response.KakaoApproveResponse;
 import com.lgcms.payment.dto.kakao.response.KakaoReadyResponse;
+import com.lgcms.payment.dto.request.CartInfo;
 import com.lgcms.payment.dto.request.PaymentApproveRequest;
 import com.lgcms.payment.dto.request.PaymentReadyRequest;
 import com.lgcms.payment.dto.response.PaymentReadyResponse;
@@ -32,13 +34,13 @@ public class PaymentService {
     private final WebClient webClient;
     private final LectureService lectureService;
     private final PaymentStatusRepository paymentStatusRepository;
-    private final CartRepository cartRepository;
+    private final CartService cartService;
 
     @Transactional
     public PaymentReadyResponse getReady(PaymentReadyRequest paymentReadyRequest, Long memberId) {
-//        if (lectureService.isExist(memberId, paymentReadyRequest.LectureId())) {
-//            throw new BaseException(PaymentError.ALREADY_PAYMENT_LECTURE);
-//        }
+        if (lectureService.isExist(memberId, paymentReadyRequest.lectureId())) {
+            throw new BaseException(PaymentError.ALREADY_PAYMENT_LECTURE);
+        }
 
         KakaoReadyRequest kakaoReadyRequest = KakaoReadyRequest.builder()
                 .cid(kakaoConfig.getCid())
@@ -86,6 +88,12 @@ public class PaymentService {
                     .retrieve()
                     .bodyToMono(KakaoApproveResponse.class)
                     .block();
+
+            for(CartInfo cartInfo : paymentApproveRequest.cartInfos()){
+                JoinLectureRequest joinLectureRequest = new JoinLectureRequest(cartInfo.getLectureId(), memberId);
+                lectureService.joinStudent(joinLectureRequest);
+                cartService.deleteCart(cartInfo.getCartId());
+            }
 
         }catch (Exception e){
             throw new BaseException(PaymentError.PAYMENT_FAIL);
