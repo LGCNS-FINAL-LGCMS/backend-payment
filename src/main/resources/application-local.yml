@@ -65,3 +65,11 @@ kakao:
   secret: ${KAKAO_SECRET}
   partnerOrderId: "hello"
   partnerUserId: "hello"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  metrics:
+    tags:
+      application: ${spring.application.name}
