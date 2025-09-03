@@ -57,6 +57,6 @@ kakao:
   cancelUrl: "http://localhost:5173/cancel"
   taxFreeAmount: 0
   vatAmount: 0
-  secret: KAKAO_SECRET
+  secret: "KAKAO_SECRET"
   partnerOrderId: "hello"
   partnerUserId: "hello"
