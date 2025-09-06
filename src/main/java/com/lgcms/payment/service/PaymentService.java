@@ -98,33 +98,6 @@ public class PaymentService {
         }catch (Exception e){
             throw new BaseException(PaymentError.PAYMENT_FAIL);
         }
-
-//        try {
-//            List<PaymentStatus> paymentStatusList = paymentStatusRepository.findAllByMemberId(memberId);
-//            for (PaymentStatus paymentStatus : paymentStatusList) {
-//                lectureService.joinStudent(new JoinLectureRequest(paymentStatus.getLectureId(), memberId));
-//            }
-//        } catch (Exception e) {
-//            //결제 취소
-//
-//            KakaoCancelRequest kakaoCancelRequest = KakaoCancelRequest.builder()
-//                    .cancel_tax_free_amount(kakaoApproveResponse.getAmount().getTax_free())
-//                    .cancel_amount(kakaoApproveResponse.getAmount().getTotal())
-//                    .cid(kakaoConfig.getCid())
-//                    .tid(kakaoApproveResponse.getTid())
-//                    .build();
-//
-//            KakaoCancelResponse kakaoCancelResponse = webClient.post()
-//                    .uri("/cancel")
-//                    .bodyValue(kakaoCancelRequest)
-//                    .retrieve()
-//                    .bodyToMono(KakaoCancelResponse.class)
-//                    .block();
-//
-//            paymentStatusRepository.deleteAllByMemberId(memberId);
-//
-//            throw new BaseException(PaymentError.PAYMENT_FAIL);
-//        }
     }
 
     public PaymentReadyResponse getListReady(List<PaymentReadyRequest> paymentReadyRequests, Long memberId) {
