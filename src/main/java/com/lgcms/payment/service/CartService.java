@@ -24,6 +24,7 @@ public class CartService {
         Cart cart = Cart.builder()
                 .memberId(memberId)
                 .title(cartAddRequest.title())
+                .thumbnailUrl(cartAddRequest.thumbnailUrl())
                 .lectureId(cartAddRequest.lectureId())
                 .price(cartAddRequest.price())
                 .build();
