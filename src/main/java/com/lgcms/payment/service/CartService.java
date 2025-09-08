@@ -1,5 +1,7 @@
 package com.lgcms.payment.service;
 
+import com.lgcms.payment.common.dto.exception.BaseException;
+import com.lgcms.payment.common.dto.exception.PaymentError;
 import com.lgcms.payment.domain.Cart;
 import com.lgcms.payment.dto.request.CartAddRequest;
 import com.lgcms.payment.dto.response.CartListResponse;
@@ -21,6 +23,10 @@ public class CartService {
 
     @Transactional
     public void addCart(Long memberId, CartAddRequest cartAddRequest) {
+
+        if(cartRepository.findByMemberIdAndLectureId(memberId,cartAddRequest.lectureId()))
+            throw new BaseException(PaymentError.DUPLICATED_CART_ITEM);
+
         Cart cart = Cart.builder()
                 .memberId(memberId)
                 .title(cartAddRequest.title())
