@@ -12,5 +12,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Long countByMemberId(Long memberId);
 
-    boolean findByMemberIdAndLectureId(Long memberId, String s);
+    boolean existsByMemberIdAndLectureId(Long memberId, String s);
 }

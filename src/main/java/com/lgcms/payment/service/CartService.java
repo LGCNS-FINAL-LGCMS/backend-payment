@@ -24,7 +24,7 @@ public class CartService {
     @Transactional
     public void addCart(Long memberId, CartAddRequest cartAddRequest) {
 
-        if(cartRepository.findByMemberIdAndLectureId(memberId,cartAddRequest.lectureId()))
+        if(cartRepository.existsByMemberIdAndLectureId(memberId,cartAddRequest.lectureId()))
             throw new BaseException(PaymentError.DUPLICATED_CART_ITEM);
 
         Cart cart = Cart.builder()
